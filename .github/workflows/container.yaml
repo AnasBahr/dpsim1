@@ -5,8 +5,7 @@ on:
   pull_request:
     types: [opened, synchronize, reopened]
 
-## Build ##
-
+## Build a ##
 jobs:
   linux-fedora-dpsimpy:
     name: Build dpsimpy and tests examples on Fedora Linux
