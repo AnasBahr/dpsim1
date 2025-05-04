@@ -36,4 +36,3 @@ You can also send a direct message to
 - Markus Mirz
 - Jan Dinkelbach
 - Steffen Vogel
-- hi
