@@ -8,6 +8,8 @@
 
 [![Build & Test Windows](https://github.com/sogno-platform/dpsim/actions/workflows/build_test_windows.yaml/badge.svg)](https://github.com/sogno-platform/dpsim/actions/workflows/build_test_windows.yaml)
 
+[![codecov](https://codecov.io/gh/AnasBahr/dpsim1/graph/badge.svg?token=JWMESEACTH)](https://codecov.io/gh/AnasBahr/dpsim1)
+
 [![License: MPL 2.0](https://img.shields.io/badge/License-MPL%202.0-brightgreen.svg)](https://opensource.org/licenses/MPL-2.0)
 
 DPsim is a solver library for dynamic power system simulation.
