@@ -122,13 +122,18 @@ test-jupyter-notebooks:
         PYTHONPATH: "${{ github.workspace }}/build"
       run: |
         cp -r python/src/dpsim build/
-        pytest -v --nbval --cov=python/src/dpsim --cov-report=xml examples/Notebooks/Circuits/ -n auto
 
-    - name: Upload coverage reports to Codecov
-        uses: codecov/codecov-action@v5
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          slug: AnasBahr/dpsim1
+    - name: Install dependencies
+      run: pip install pytest pytest-cov
+
+    - name: Run tests
+      run: pytest --cov --cov-branch --cov-report=xml
+
+    - name: Upload results to Codecov
+      uses: codecov/codecov-action@v5
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
+        slug: AnasBahr/dpsim1
 
     - name: Archive notebook outputs
       uses: actions/upload-artifact@v4
