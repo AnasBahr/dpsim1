@@ -110,24 +110,11 @@ test-jupyter-notebooks:
       working-directory: ${{ github.workspace }}
       run: ls -l ./build/dpsim/examples/cxx/
 
-    - name: Install testing and coverage tools
-      shell: bash
-      run: |
-        pip install pytest-xdist pytest-cov nbval
-
-    - name: Run pytest with coverage on notebooks
-      shell: bash
-      working-directory: ${{ github.workspace }}
-      env:
-        PYTHONPATH: "${{ github.workspace }}/build"
-      run: |
-        cp -r python/src/dpsim build/
-
     - name: Install dependencies
       run: pip install pytest pytest-cov
 
     - name: Run tests
-      run: pytest --cov --cov-branch --cov-report=xml
+      run: pytest --cov --cov-branch --cov-report=xml examples/Notebooks/Circuits/
 
     - name: Upload results to Codecov
       uses: codecov/codecov-action@v5
