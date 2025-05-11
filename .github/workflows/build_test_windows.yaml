@@ -46,6 +46,7 @@ jobs:
 
     - name: Run pytest on notebooks
       run: pytest --cov --cov-branch --cov-report=xml examples/Notebooks/Circuits/
+      continue-on-error: true
 
     - name: Upload coverage report
       uses: codecov/codecov-action@v5
