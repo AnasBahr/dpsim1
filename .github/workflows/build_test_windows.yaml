@@ -4,6 +4,7 @@ on:
   push:
   pull_request:
     types: [opened, synchronize, reopened]
+  workflow_dispatch:
 
 ## Build ##
 
@@ -31,7 +32,7 @@ jobs:
         cd ${{ github.workspace }}
         cd build
         git describe --tags --abbrev=0 --match "v*"
-        cmake -DWITH_PYBIND=OFF ..
+        cmake -DWITH_PYBIND=ON ..
         cmake --build . --target dpsim --parallel
 
     - name: Upload Windows build
@@ -40,49 +41,14 @@ jobs:
         name: build-windows-examples-cache-${{ github.sha }}
         path: ${{ github.workspace }}/build
 
-  test-jupyter-notebooks:
-    name: Run pytest over all notebooks
-    runs-on: ubuntu-latest
-    needs: [windows]
-    container: sogno/dpsim:dev
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+    - name: Install Python test dependencies
+      run: pip install pytest pytest-cov
 
-      - name: Restore build archive
-        uses: actions/download-artifact@v4
-        with:
-          name: build-windows-examples-cache-${{ github.sha }}
-          path: ${{ github.workspace }}/build
+    - name: Run pytest on notebooks
+      run: pytest --cov --cov-branch --cov-report=xml examples/Notebooks/Circuits/
 
-      - name: Prepare binary permissions
-        shell: bash
-        working-directory: ${{ github.workspace }}
-        run: |
-          chmod -R +x ./build/dpsim/examples/cxx
-
-      - name: Work around permission issue
-        run: git config --global --add safe.directory /__w/dpsim/dpsim
-
-      - name: Check for test binaries
-        shell: bash
-        working-directory: ${{ github.workspace }}
-        run: ls -l ./build/dpsim/examples/cxx/
-
-      - name: Install dependencies
-        run: pip install pytest pytest-cov
-
-      - name: Run tests
-        run: pytest --cov --cov-branch --cov-report=xml examples/Notebooks/Circuits/
-
-      - name: Upload results to Codecov
-        uses: codecov/codecov-action@v5
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          slug: AnasBahr/dpsim1
-
-      - name: Archive notebook outputs
-        uses: actions/upload-artifact@v4
-        with:
-          name: pytest-output-${{ github.sha }}
-          path: outputs/
+    - name: Upload coverage report
+      uses: codecov/codecov-action@v5
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
+        slug: AnasBahr/dpsim1
