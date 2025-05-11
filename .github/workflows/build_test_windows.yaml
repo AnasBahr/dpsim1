@@ -42,7 +42,7 @@ jobs:
         path: ${{ github.workspace }}/build
 
     - name: Install Python test dependencies
-      run: pip install pytest pytest-cov nbformat
+      run: pip install pytest pytest-cov nbformat nbconvert
 
     - name: Run pytest on notebooks
       run: pytest --cov --cov-branch --cov-report=xml examples/Notebooks/Circuits/
